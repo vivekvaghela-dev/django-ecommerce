@@ -32,3 +32,8 @@ class pro_(admin.ModelAdmin):
     list_display = ['id','name','image','discription','stock','price','category']
 
 admin.site.register(Product,pro_)
+
+class order_(admin.ModelAdmin):
+    list_display = ['id','pro','user','qty','total_price','payment_type','payment_id','dt']
+
+admin.site.register(Order,order_) 

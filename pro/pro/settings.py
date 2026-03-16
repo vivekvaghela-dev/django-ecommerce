@@ -132,3 +132,5 @@ NEDIA_URL = os.path.join(BASE_DIR,'media/')
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
+
+SESSION_SAVE_EVERY_REQUEST = True  # Har request par session save karega

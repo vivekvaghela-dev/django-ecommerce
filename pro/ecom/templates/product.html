@@ -41,18 +41,27 @@
             </div>
             <div class="col-lg-6 mr-auto ml-automt-5">
                 <h1>{{product.name}}</h1>
-                <p>
-                    {{product.decription}} 
-                </p>
                 <p><strong>Price:</strong> ${{product.price}}</p>
-                <i class="fa-solid fa-star ratingcolor"></i>
-                <i class="fa-solid fa-star ratingcolor"></i>
-                <i class="fa-solid fa-star ratingcolor"></i>
-                <i class="fa-regular fa-star-half-stroke ratingcolor"></i>
-                <i class="fa-regular fa-star ratingcolor"></i>
+                <p>
+                    {{product.discription}} 
+                </p>
+
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="number" name="qty" value="1" max="10" min="1" class="form-control mb-2" style="width: 80px;">
+
+
+
+                <div class="mb-2">
+                    <i class="fa-solid fa-star ratingcolor"></i>
+                    <i class="fa-solid fa-star ratingcolor"></i>
+                    <i class="fa-solid fa-star ratingcolor"></i>
+                    <i class="fa-regular fa-star-half-stroke ratingcolor"></i>
+                    <i class="fa-regular fa-star ratingcolor"></i>
+                </div>
                 <br/>
-                <a href="cart.html">
-                    <buttom class="btn btn-outline-primary mt-3">Add to Cart</buttom>
+                
+                    <button type="submit" class="btn btn-outline-primary mt-3">Buy now</button>
                 </a> 
             </div>
             </div>

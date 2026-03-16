@@ -48,3 +48,24 @@ class Product(models.Model):
     
     def __str__(self):
         return self.name
+
+
+
+class Order(models.Model):
+    user = models.ForeignKey(Registration,on_delete=models.CASCADE)
+    #email = models.EmailField()
+    pro = models.ForeignKey(Product,on_delete=models.CASCADE)
+    qty = models.PositiveIntegerField(10)
+    name = models.CharField(max_length=50)
+    mob = models.CharField(max_length=10)
+    add = models.TextField()
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pin = models.CharField(max_length=6)
+    total_price = models.PositiveIntegerField()
+    payment_type = models.CharField(max_length=50)
+    payment_id  = models.CharField(max_length=100)
+    dt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.name} - {self.pro.name}" # Ab ye string return karta hai

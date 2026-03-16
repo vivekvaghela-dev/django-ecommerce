@@ -80,7 +80,7 @@ def login(request):
             if is_present:
                 if request.POST['password'] == is_present.password:
                    request.session['login'] = is_present.email
-                   return redirect('index')
+                   return redirect('index') #True condition Home Page
                 else:
                     return render(request,'login.html',{'wrong_pass':"password is incorrect..."})
         except:
@@ -89,6 +89,28 @@ def login(request):
         return render(request,'login.html')
 
 
+
+
+
+
+
+def profile(request):
+        if 'login' in request.session:
+            logged_user = Registration.objects.get(email = request.session['login'])
+            if request.method == 'POST':
+                # update_user = logged_user(name = request.POST['name'],
+                #                        mob = request.POST['mob'],
+                #                        add = request.POST['add'] )
+                logged_user.name = request.POST['name']
+                logged_user.add = request.POST['add']
+                logged_user = request.POST['mob']
+                logged_user.save()
+                #return render(request,'profile.html',{logged_in:True,'logged_user':logged_user})
+                return redirect('profile')
+            else:
+                return render(request,'profile.html',{'logged_in':True,'logged_user':logged_user})
+        else:
+            return redirect('login')
 
 def index(request):
     cat = category.objects.all()
@@ -112,13 +134,64 @@ def cat_pro(request,id):
 def pro_details(request,id):
     prod = Product.objects.get(pk = id) #pk = primary key
     if 'login' in request.session:
-        return render(request,'product.html',{'logged_in':True,'product':prod})
+        if request.method == 'POST':
+            # Session mein data save karein
+            request.session['qty'] = request.POST.get('qty',1)
+            request.session['proid'] = id
+            request.session.modified = True
+            return redirect('checkout')
+        else:
+            return render(request,'product.html',{'logged_in':True,'product':prod})
     else:
-        return render(request,'product.html',{'product':prod})
+        #return render(request,'product.html',{'product':prod})
+        return redirect('login') # Bina login ke buy nahi karne dena chahiye
 
-def profile(request):
-    if 'login' in request.session:
-        logged_user = Registration.objects.get(email = request.session['login'])
-        return render(request,'profile.html',{'logged_in':True,'logged_user':logged_user})
+
+def checkout(request):
+    if 'login' in request.session: # Check session keys
+        pro_id = request.session.get('proid')
+        qty = request.session.get('qty',1)
+
+        if not pro_id: # Sirf pro_id check karein
+           return redirect('index')
+        
+        logged_in = Registration.objects.get(email = request.session['login'])
+        pro = Product.objects.get(id=pro_id)
+        """try:
+           #pro = Product.objects.get(id=request.session['proid']) #user "Buy Now" ya "Checkout" par click kar raha hai,
+           pro = Product.objects.get(id=pro_id) 
+        except Product.DoesNotExist:
+           return redirect('index')"""
+       
+        if request.method == 'POST':
+            obj = Order(user = logged_in, 
+                        pro = pro,
+                        qty = request.session['qty'],
+                        name = request.POST.get('name'),
+                        #email = request.POST.get('email'),
+                        mob = request.POST.get('mob'),
+                        add = request.POST.get('add'),
+                        city = request.POST.get('city'),
+                        state = request.POST.get('state'),
+                        pin = request.POST.get('pin'),
+                        payment_type = request.POST.get('paymentvia'),
+                        #payment = "cod",
+                        total_price = pro.price * int(request.session['qty']),
+                        )
+            obj.save()
+
+            #pro.stock -= int(request.session['qty']) # Stock update
+            #pro.stock -= int(qty) 
+            #pro.save() #Product ka stock update karne ke liye
+
+            return render(request,'checkout.html',{'logged_in':logged_in,'msg': 'Order Placed!'})
+        else:
+            # GET request par product aur qty dono bhejein
+            return render(request, 'checkout.html', {
+                'logged_in': logged_in, 
+                'pro': pro, 
+                'qty': qty,
+                'total': pro.price * int(qty)
+            })
     else:
         return redirect('login')

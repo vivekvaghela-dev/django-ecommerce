@@ -17,5 +17,6 @@ urlpatterns = [
     path('cat_pro/<int:id>',cat_pro,name='cat_pro'),
     path('pro_details/<int:id>',pro_details,name='pro_details'),
     path('profile/',profile,name='profile'),
+    path('checkout/',checkout,name='checkout'),
 
 ]
