@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# MySQL
+*.sql
+*.dump
+mysql_data/
+
+# Django local settings (DB credentials yahan hoti hain)
+local_settings.py
+
+# Virtual env
+venv/
+.env
+
+.vscode/
+*.code-workspace
+
+# ─ Sensitive Credentials ─
+client_secret.json
+*.pickle
+secrets.json
