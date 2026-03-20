@@ -1,10 +1,10 @@
-##🛒 Django E-Commerce Web Application
+## 🛒 Django E-Commerce Web Application
 
 🚧 Status: Active Development — Features are being added continuously.
 
 A Django-based E-Commerce web application with product management, user authentication, order placement, and admin panel — built with Python, MySQL, and Bootstrap.
 
-##✅ Features Implemented
+## ✅ Features Implemented
 - 🛍️ Product Listing — Browse all products with details
 - 📄 Product Detail Page — Individual product view
 - 🔐 User Authentication — Register, Login, Logout
