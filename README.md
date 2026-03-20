@@ -1,6 +1,6 @@
 ## 🛒 Django E-Commerce Web Application
 
-🚧 Status: Active Development — Features are being added continuously.
+## 🚧 Status: Active Development — Features are being added continuously.
 
 A Django-based E-Commerce web application with product management, user authentication, order placement, and admin panel — built with Python, MySQL, and Bootstrap.
 
@@ -11,17 +11,17 @@ A Django-based E-Commerce web application with product management, user authenti
 - 📦 Order Placement — Users can place orders
 - ⚙️ Admin Panel — Manage products, orders, users via Django admin
 
-##🔜 Coming Soon
+## 🔜 Coming Soon
 - 🛒 Cart — Add, remove, update items
 - 💳 Payment integration
 - 📋 Order history & tracking
 
-##🔐 Security Practices
+## 🔐 Security Practices
 - All credentials in .env — never hardcoded in code
 - .env in .gitignore — not pushed to GitHub
 - Django CSRF protection enabled
 
-##💡 What This Project Demonstrates
+## 💡 What This Project Demonstrates
 - Django MVT architecture in a real-world project
 - Django ORM for MySQL database operations
 - User authentication with Django built-in system
