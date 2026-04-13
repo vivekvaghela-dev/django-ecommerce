@@ -48,21 +48,31 @@
 
                 <form action="" method="post">
                     {% csrf_token %}
-                    <input type="number" name="qty" value="1" max="10" min="1" class="form-control mb-2" style="width: 80px;">
+                    <input type="number" name="qty" value="1" max="" min="1" class="form-control mb-2" style="width: 80px;">
 
+                    <div class="mb-2">
+                        <i class="fa-solid fa-star ratingcolor"></i>
+                        <i class="fa-solid fa-star ratingcolor"></i>
+                        <i class="fa-solid fa-star ratingcolor"></i>
+                        <i class="fa-regular fa-star-half-stroke ratingcolor"></i>
+                        <i class="fa-regular fa-star ratingcolor"></i>
+                    </div>
+                    <br/>
+                    {% if less_stock %}
+                        <p style="color: red;">Only {{product.stock}} unit avaialble.</p>
+                    {% endif %}
+                    {% if products.stock is 0 %}
+                        <p style="color: red;"> Products is out of stock </p>
+                    {% else %}
+                    <a href=>                    
+                    <button type="submit" class="btn btn-outline-primary mt-3" name="buy">Buy now</button>
+                    </a>
+                    <a href=>
+                    <button type="submit" class="btn btn-outline-primary mt-3" name="cart">Add to Cart</button>
+                    </a>
+                    {% endif %}
 
-
-                <div class="mb-2">
-                    <i class="fa-solid fa-star ratingcolor"></i>
-                    <i class="fa-solid fa-star ratingcolor"></i>
-                    <i class="fa-solid fa-star ratingcolor"></i>
-                    <i class="fa-regular fa-star-half-stroke ratingcolor"></i>
-                    <i class="fa-regular fa-star ratingcolor"></i>
-                </div>
-                <br/>
-                
-                    <button type="submit" class="btn btn-outline-primary mt-3">Buy now</button>
-                </a> 
+                </form>
             </div>
             </div>
         </div>

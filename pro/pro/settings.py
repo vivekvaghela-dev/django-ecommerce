@@ -75,8 +75,13 @@ WSGI_APPLICATION = 'pro.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',#'db(Change to database_name your requriment).sqlite3', This line is create a Database
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce',#'db(Change to database_name your requriment).
+        'HOST' : '127.0.0.1',
+        'USER' : 'root',
+        'PASSWORD' : 'Vivek@27/10/2007',
+        'POST' : '3306',
+
     }
 }
 

@@ -1,0 +1,122 @@
+{% extends "master_nav_footer.html" %}
+{% load static %}
+
+{% block content1 %}
+
+<style>
+/* ✅ Footer fix only for this page */
+.cart-wrapper {
+    min-height: 70vh;   /* adjust if needed */
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-content {
+    flex: 1;
+}
+</style>
+
+<div class="cart-wrapper">
+
+    <div class="cart-content container my-5">
+        <h2 class="mb-4 fw-bold">Shopping Cart</h2>
+
+        <div class="row">
+
+            <!-- Cart Table -->
+            <div class="col-12 col-lg-8">
+                <div class="table-responsive shadow-sm rounded bg-white">
+                    <table class="table align-middle mb-0">
+                        {% if cart %}
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th>Total</th>
+                                <th class="text-right">
+                                    <button class="btn btn-outline-danger btn-sm">Remove All</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        {% else %}
+                        <p> Your cart is empty, add product to cart to proceed further.
+                        {% endif%}
+
+                        <tbody>
+                            {% for i in cart %}
+                            <tr>
+                                <td>
+                                    <img src="{{i.pro.image.url}}"  height="200px" width="200px">
+                                </td>
+
+                                <td>₹{{i.pro.price}}</td>
+
+                                <td class="text-center">
+                                    {% if i.pro.stock <= 0 %}
+                                        <p style="color: green;">
+                                        Currently this Product is out of stock.
+                                        </p>
+                                    {% elif i.qty > i.pro.stock %}
+                                     <a href={% url "plus_pro" i.id %}><button class="btn btn-light btn-sm">+</button></a>
+
+                                    <span class="mx-2">{{i.qty}}</span>
+
+                                    <a href={% url "minus_pro" i.id %}><button class="btn btn-light btn-sm">-</button></a>
+                                    <p style="color: green;">
+                                        Only {{i.pro.stock}} unit is available in stock.
+                                    </p>              
+                                    {% else %}
+                                    <a href={% url "plus_pro" i.id %}><button class="btn btn-light btn-sm">+</button></a>
+
+                                    <span class="mx-2">{{i.qty}}</span>
+
+                                    <a href={% url "minus_pro" i.id %}><button class="btn btn-light btn-sm">-</button></a>
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {% if i.pro.stock <= 0 %}
+                                    {% else %}
+                                     ₹{{i.total_price}}
+                                    {% endif %}</td>
+
+                                <td class="text-right">
+                                    <button class="btn btn-outline-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            {% if cart %}
+            <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">Summary</h5>
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <span>Total Price:</span>
+                            <span class="text-success fw-bold">₹{{total}}</span>
+                        </div>
+                        <a href={% url "checkout_cart" %}>
+
+                        <button class="btn btn-success w-100">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif%}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

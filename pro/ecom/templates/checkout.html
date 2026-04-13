@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta-viewport charset="UTF-8">
     <title>Checkout</title>
 
     <!-- Bootstrap 4 CDN -->
@@ -37,14 +37,28 @@
                 <span class="text-muted">Your cart</span>
                 <span class="badge badge-secondary badge-pill">3</span>
             </h4>
-
+            {% for i in cart_data %}
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between">
-                    <span>Product: {{ pro.name }} (x{{ qty }})</span>
+                    <div>
+                        <div>
+                            <img src="{{i.pro.image.url}}" alt="" style="height: 25%; width: 25%;">
+                        </div>
+                        <h6 class="my-0">{{i.proname}}</h6>
+                        <small class="text-muted">Discrption:{{i.pro.discription}}</small>
+                        <div>
+                            <spam class="text-muted">Price:{{i.pro.price}}</spam>
+                        </div>
+                        <span class="text-muted">Quantity:{{i.qty}}</span>
+                    </div>
                 </li>
+            {% endfor %}
+                
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (INR)</span>
-                <strong>₹ {{ total }}</strong> </li>
+                <strong>₹ {{ total }}</strong> 
+                </li>
+
             </ul>
 
             <div class="card p-2">

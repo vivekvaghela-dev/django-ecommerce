@@ -18,5 +18,9 @@ urlpatterns = [
     path('pro_details/<int:id>',pro_details,name='pro_details'),
     path('profile/',profile,name='profile'),
     path('checkout/',checkout,name='checkout'),
+    path('cart_view/',cart_view,name='cart_view'),
+    path('plus_pro/<int:id>',plus_pro,name='plus_pro'),
+    path('minus_pro/<int:id>',minus_pro,name='minus_pro'),
+    path('checkout_cart/',checkout_cart,name='checkout_cart'),
 
 ]

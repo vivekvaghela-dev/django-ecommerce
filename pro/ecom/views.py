@@ -11,7 +11,6 @@ def first(Request):
 def demo(request):
     return render(request,'demo.html')
 
-
 def style(request):
     return render(request,'style.html')
 
@@ -21,7 +20,6 @@ def show(request):
    # for i in data:
     #    print(i.email)
     return render(request, 'show.html',{'student':data})
-
 
 def showimg(request):
     dataimg = Img.objects.all()
@@ -47,6 +45,7 @@ def storeget(request):
         print(name,email)
     return render(request,'storeget.html')
 
+
 def storeimg(request):
     if request.method == 'POST' and request.FILES:
         store_image = Img()
@@ -54,7 +53,6 @@ def storeimg(request):
         store_image.image = request.FILES.get('image')
         store_image.save()
     return render(request,'storeimg.html')
-
 
 
 def register(request):
@@ -72,6 +70,7 @@ def register(request):
             return render(request,'register.html',{'registration':"Registrations Successfull."})    
     else:
         return render(request,'register.html')
+    
 
 def login(request):
     if request.method == 'POST':
@@ -87,12 +86,7 @@ def login(request):
             return render(request,'login.html',{'not_registered':"this email does not exists..."})
     else:
         return render(request,'login.html')
-
-
-
-
-
-
+    
 
 def profile(request):
         if 'login' in request.session:
@@ -111,6 +105,7 @@ def profile(request):
                 return render(request,'profile.html',{'logged_in':True,'logged_user':logged_user})
         else:
             return redirect('login')
+        
 
 def index(request):
     cat = category.objects.all()
@@ -124,27 +119,116 @@ def logout(request):
     del request.session['login']
     return redirect('index')
 
+
 def cat_pro(request,id):
     pro = Product.objects.filter(category = id)
     if 'login' in request.session:
         return render(request,'cat_pro.html',{'pro':pro,'logged_in':True})
     else:
         return render(request,'cat_pro.html',{'pro':pro})
+    
 
 def pro_details(request,id):
     prod = Product.objects.get(pk = id) #pk = primary key
     if 'login' in request.session:
-        if request.method == 'POST':
-            # Session mein data save karein
-            request.session['qty'] = request.POST.get('qty',1)
-            request.session['proid'] = id
-            request.session.modified = True
-            return redirect('checkout')
+        logged_in = Registration.objects.get(email = request.session['login'])
+        #if request.method == 'POST':
+        if 'buy' in request.POST:
+            if int(request.POST['qty']) > prod.stock:
+                return render(request,'product.html',{'logged_in':True,'product':prod,'less_stock':True})
+            else:
+            # Session ma data save karva
+                request.session['qty'] = request.POST.get('qty',1)
+                request.session['proid'] = id
+                request.session.modified = True
+                return redirect('checkout')
+        elif 'cart' in request.POST:
+            add_to_cart = Cart(user = logged_in,
+                 pro = prod,
+                 qty = request.POST['qty'],
+                 total_price = prod.price * int(request.POST['qty']) 
+                 )
+            add_to_cart.save()
+            return render(request,'product.html',{'logged_in':True,'product':prod})
         else:
             return render(request,'product.html',{'logged_in':True,'product':prod})
     else:
         #return render(request,'product.html',{'product':prod})
         return redirect('login') # Bina login ke buy nahi karne dena chahiye
+
+
+def cart_view(request):#add to cart view
+    if 'login' in request.session:
+        logged_in = Registration.objects.get(email = request.session['login'])
+        cart_data = Cart.objects.filter(user = logged_in)
+        total = 0
+        for i in cart_data:
+            total += i.total_price
+            
+        return render(request,'cart.html',{
+            'logged_in':True,
+            'cart':cart_data,
+            'total':total
+        })
+    else:
+        return redirect('login')
+    
+
+def plus_pro(request,id):#cart me add products
+    cart_data = Cart.objects.get(id = id)
+    #pro = Product.objects.get(id = cart_data.pro.id)
+    cart_data.qty += 1
+    cart_data.total_price += cart_data.pro.price
+    cart_data.save()
+    return redirect('cart_view')
+
+
+def minus_pro(request,id):#cart me minus products
+    cart_data = Cart.objects.get(id = id)
+    if cart_data.qty <= 1:
+        cart_data.delete()
+
+        return redirect('cart_view')
+    else:
+        cart_data.qty -= 1
+        cart_data.total_price -= cart_data.pro.price
+        cart_data.save()
+        return redirect('cart_view')
+    
+
+def checkout_cart(request):#add to cart checkout products
+    if 'login' in request.session:
+        logged_in = Registration.objects.get(email = request.session['login'])
+        cart_data = Cart.objects.filter(user = logged_in)
+        total = 0
+        for i in cart_data:
+            total += i.total_price
+
+        if request.method == 'POST':
+            for i in cart_data:
+                obj = Order()
+                obj.user = logged_in
+                obj.pro = i.pro
+                obj.qty = i.qty
+                obj.name = request.POST.get('name'),
+                obj.mob = request.POST.get('mob'),
+                obj.add = request.POST.get('add'),
+                obj.city = request.POST.get('city'),
+                obj.state = request.POST.get('state'),
+                obj.pin = request.POST.get('pin'),
+                obj.payment_type = request.POST.get('paymentvia'),
+                obj.payment_id = "cod",
+                obj.total_price = i.total_price
+                obj.save()
+            return redirect('index')
+        else:
+                return render(request,'checkout.html',{
+                'logged_in':logged_in,
+                'cart_data':cart_data,
+                'total':total
+                 })
+    else:
+        return render(request,'checkout.html')
 
 
 def checkout(request):
@@ -168,21 +252,19 @@ def checkout(request):
                         pro = pro,
                         qty = request.session['qty'],
                         name = request.POST.get('name'),
-                        #email = request.POST.get('email'),
                         mob = request.POST.get('mob'),
                         add = request.POST.get('add'),
                         city = request.POST.get('city'),
                         state = request.POST.get('state'),
                         pin = request.POST.get('pin'),
                         payment_type = request.POST.get('paymentvia'),
-                        #payment = "cod",
+                        payment_id = "cod",
                         total_price = pro.price * int(request.session['qty']),
                         )
             obj.save()
 
-            #pro.stock -= int(request.session['qty']) # Stock update
-            #pro.stock -= int(qty) 
-            #pro.save() #Product ka stock update karne ke liye
+            pro.stock -= int(request.session['qty']) # Stock update
+            pro.save() #Product ka stock update karne ke liye
 
             return render(request,'checkout.html',{'logged_in':logged_in,'msg': 'Order Placed!'})
         else:
@@ -195,3 +277,5 @@ def checkout(request):
             })
     else:
         return redirect('login')
+    
+

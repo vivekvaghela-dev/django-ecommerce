@@ -8,9 +8,7 @@ class Student(models.Model):
 
     def __str__(self): #Construcuter
         return self.name
-    
-    
-    
+ 
 class Img(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='test_imgs/')    
@@ -18,7 +16,8 @@ class Img(models.Model):
     def __str__(self):
         return self.name
     
-    
+
+#Registration Model
 class Registration(models.Model):
     email = models.EmailField()
     name = models.CharField(max_length=50)
@@ -28,8 +27,9 @@ class Registration(models.Model):
         
     def __str__(self):
         return self.name
-    
-    
+
+
+#Category Model
 class category(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='cat_img')
@@ -38,6 +38,8 @@ class category(models.Model):
     def __str__(self):
         return self.name
     
+
+#Add Products Model 
 class Product(models.Model):
     name = models.CharField(max_length=50)
     image = models.ImageField(upload_to='cat_img')
@@ -50,14 +52,14 @@ class Product(models.Model):
         return self.name
 
 
-
+#Order Model
 class Order(models.Model):
     user = models.ForeignKey(Registration,on_delete=models.CASCADE)
     #email = models.EmailField()
     pro = models.ForeignKey(Product,on_delete=models.CASCADE)
-    qty = models.PositiveIntegerField(10)
+    qty = models.PositiveIntegerField(default=1)
     name = models.CharField(max_length=50)
-    mob = models.CharField(max_length=10)
+    mob = models.CharField(max_length=13)
     add = models.TextField()
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
@@ -69,3 +71,15 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user.name} - {self.pro.name}" # Ab ye string return karta hai
+    
+
+#Card Model
+class Cart(models.Model):
+    user = models.ForeignKey(Registration, on_delete=models.CASCADE)
+    pro = models.ForeignKey(Product,on_delete=models.CASCADE)
+    qty = models.PositiveIntegerField()
+    total_price = models.PositiveIntegerField()
+    order_id = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user)
