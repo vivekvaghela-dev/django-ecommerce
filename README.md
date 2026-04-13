@@ -45,9 +45,10 @@ This is a fully functional E-Commerce platform developed using the Django web fr
 ## 📁 Project Structure
  
 ```
+```
  
-## ⚙️ Installation & Setup
- 
+### Installation & Setup
+
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/6355492210/django-ecommerce.git
