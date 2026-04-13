@@ -129,7 +129,7 @@ Admin Panel: `http://127.0.0.1:8000/admin/`
  
 ## 👨‍💻 Author
  
-**Vivek Vaghela**
+**Vivek Vaghela | Python Backend Developer  | Fast learner**
 - GitHub: [@6355492210](https://github.com/6355492210)
 - LinkedIn: [linkedin.com/in/vaghelavivekm](https://www.linkedin.com/in/vaghelavivekm)
 - Location: Rajkot, Gujarat
