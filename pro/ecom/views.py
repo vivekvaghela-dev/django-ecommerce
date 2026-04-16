@@ -97,7 +97,7 @@ def profile(request):
                 #                        add = request.POST['add'] )
                 logged_user.name = request.POST['name']
                 logged_user.add = request.POST['add']
-                logged_user = request.POST['mob']
+                logged_user.mob = request.POST['mob']
                 logged_user.save()
                 #return render(request,'profile.html',{logged_in:True,'logged_user':logged_user})
                 return redirect('profile')
@@ -160,13 +160,13 @@ def pro_details(request,id):
 def cart_view(request):#add to cart view
     if 'login' in request.session:
         logged_in = Registration.objects.get(email = request.session['login'])
-        cart_data = Cart.objects.filter(user = logged_in)
+        cart_data = Cart.objects.filter(user = logged_in,order_id = 0)
         total = 0
         for i in cart_data:
             total += i.total_price
             
         return render(request,'cart.html',{
-            'logged_in':True,
+            'logged_in':logged_in,
             'cart':cart_data,
             'total':total
         })
@@ -199,34 +199,46 @@ def minus_pro(request,id):#cart me minus products
 def checkout_cart(request):#add to cart checkout products
     if 'login' in request.session:
         logged_in = Registration.objects.get(email = request.session['login'])
-        cart_data = Cart.objects.filter(user = logged_in)
+        cart_data = Cart.objects.filter(user = logged_in, order_id = 0)
         total = 0
         for i in cart_data:
             total += i.total_price
 
         if request.method == 'POST':
             for i in cart_data:
+                #Order Create
                 obj = Order()
                 obj.user = logged_in
                 obj.pro = i.pro
                 obj.qty = i.qty
-                obj.name = request.POST.get('name'),
-                obj.mob = request.POST.get('mob'),
-                obj.add = request.POST.get('add'),
-                obj.city = request.POST.get('city'),
-                obj.state = request.POST.get('state'),
-                obj.pin = request.POST.get('pin'),
-                obj.payment_type = request.POST.get('paymentvia'),
-                obj.payment_id = "cod",
+                obj.name = request.POST.get('name')
+                obj.mob = request.POST.get('mob')
+                obj.add = request.POST.get('add')
+                obj.city = request.POST.get('city')
+                obj.state = request.POST.get('state')
+                obj.pin = request.POST.get('pin')
+                obj.payment_type = request.POST.get('paymentvia')
+                obj.payment_id = "cod"
                 obj.total_price = i.total_price
                 obj.save()
+
+                #Cart logic
+                #latest_order = Order.objects.latest('id')
+                i.order_id = obj.id
+                i.save()
+
+                #Product no stock ghatave (Inventory Management)
+                product_to_update = i.pro
+                product_to_update.stock -= i.qty
+                product_to_update.save()
+
             return redirect('index')
         else:
-                return render(request,'checkout.html',{
+            return render(request,'checkout.html',{
                 'logged_in':logged_in,
                 'cart_data':cart_data,
                 'total':total
-                 })
+            })
     else:
         return render(request,'checkout.html')
 
@@ -240,13 +252,11 @@ def checkout(request):
            return redirect('index')
         
         logged_in = Registration.objects.get(email = request.session['login'])
-        pro = Product.objects.get(id=pro_id)
-        """try:
-           #pro = Product.objects.get(id=request.session['proid']) #user "Buy Now" ya "Checkout" par click kar raha hai,
-           pro = Product.objects.get(id=pro_id) 
-        except Product.DoesNotExist:
-           return redirect('index')"""
-       
+        #pro = Product.objects.get(id = request.session.get('proid'))
+        pro_id = request.session.get('proid')
+        pro = Product.objects.get(id = pro_id)
+
+        print("DEBUG PRODUCT:", pro.name)
         if request.method == 'POST':
             obj = Order(user = logged_in, 
                         pro = pro,
@@ -262,7 +272,6 @@ def checkout(request):
                         total_price = pro.price * int(request.session['qty']),
                         )
             obj.save()
-
             pro.stock -= int(request.session['qty']) # Stock update
             pro.save() #Product ka stock update karne ke liye
 

@@ -39,7 +39,7 @@ admin.site.register(Product,pro_)
 #Order
 class order_(admin.ModelAdmin):
     list_display = ['id','pro','user','qty','total_price','payment_type','payment_id','dt']
-
+    
 admin.site.register(Order,order_) 
 
 
