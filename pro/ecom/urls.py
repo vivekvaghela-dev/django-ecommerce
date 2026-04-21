@@ -22,5 +22,8 @@ urlpatterns = [
     path('plus_pro/<int:id>',plus_pro,name='plus_pro'),
     path('minus_pro/<int:id>',minus_pro,name='minus_pro'),
     path('checkout_cart/',checkout_cart,name='checkout_cart'),
+    path('razorpayment/',razorpayment,name='razorpayment'),
+    #path('payment_handler/',payment_handeler ,name='payment_handler'),
+
 
 ]

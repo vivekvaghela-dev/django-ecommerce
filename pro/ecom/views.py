@@ -223,14 +223,9 @@ def checkout_cart(request):#add to cart checkout products
                 obj.save()
 
                 #Cart logic
-                #latest_order = Order.objects.latest('id')
-                i.order_id = obj.id
+                latest_order = Order.objects.latest('id')
+                i.order_id = latest_order.id
                 i.save()
-
-                #Product no stock ghatave (Inventory Management)
-                product_to_update = i.pro
-                product_to_update.stock -= i.qty
-                product_to_update.save()
 
             return redirect('index')
         else:
@@ -241,50 +236,74 @@ def checkout_cart(request):#add to cart checkout products
             })
     else:
         return render(request,'checkout.html')
-
+    
 
 def checkout(request):
-    if 'login' in request.session: # Check session keys
+    if 'login' in request.session:
         pro_id = request.session.get('proid')
-        qty = request.session.get('qty',1)
+        qty = request.session.get('qty', 1)
 
-        if not pro_id: # Sirf pro_id check karein
-           return redirect('index')
-        
-        logged_in = Registration.objects.get(email = request.session['login'])
-        #pro = Product.objects.get(id = request.session.get('proid'))
-        pro_id = request.session.get('proid')
-        pro = Product.objects.get(id = pro_id)
+        if not pro_id:
+            return redirect('index')
 
-        print("DEBUG PRODUCT:", pro.name)
+        logged_in = Registration.objects.get(email=request.session['login'])
+        pro = Product.objects.get(id=pro_id)
+
         if request.method == 'POST':
-            obj = Order(user = logged_in, 
-                        pro = pro,
-                        qty = request.session['qty'],
-                        name = request.POST.get('name'),
-                        mob = request.POST.get('mob'),
-                        add = request.POST.get('add'),
-                        city = request.POST.get('city'),
-                        state = request.POST.get('state'),
-                        pin = request.POST.get('pin'),
-                        payment_type = request.POST.get('paymentvia'),
-                        payment_id = "cod",
-                        total_price = pro.price * int(request.session['qty']),
-                        )
-            obj.save()
-            pro.stock -= int(request.session['qty']) # Stock update
-            pro.save() #Product ka stock update karne ke liye
+            payment_type = request.POST.get('paymentvia')
 
-            return render(request,'checkout.html',{'logged_in':logged_in,'msg': 'Order Placed!'})
-        else:
-            # GET request par product aur qty dono bhejein
-            return render(request, 'checkout.html', {
-                'logged_in': logged_in, 
-                'pro': pro, 
-                'qty': qty,
-                'total': pro.price * int(qty)
-            })
+            # Store user details in session (IMPORTANT for later use)
+            request.session['name'] = request.POST.get('name')
+            request.session['mob'] = request.POST.get('mob')
+            request.session['add'] = request.POST.get('add')
+            request.session['city'] = request.POST.get('city')
+            request.session['state'] = request.POST.get('state')
+            request.session['pin'] = request.POST.get('pin')
+
+            if payment_type == 'cod':
+                obj = Order(
+                    user=logged_in,
+                    pro=pro,
+                    qty=qty,
+                    name=request.session['name'],
+                    mob=request.session['mob'],
+                    add=request.session['add'],
+                    city=request.session['city'],
+                    state=request.session['state'],
+                    pin=request.session['pin'],
+                    payment_type='cod',
+                    payment_id='cod',
+                    total_price=pro.price * int(qty)
+                )
+                obj.save()
+
+                pro.stock -= int(qty)
+                pro.save()
+
+                return render(request, 'success.html', {
+                    'message': "✅ Order Placed Successfully (COD)"
+                })
+
+            else:
+                request.session['amount'] = pro.price * int(qty)
+                return redirect('razorpayment')
+
+        return render(request, 'checkout.html', {
+            'logged_in': logged_in,
+            'pro': pro,
+            'qty': qty,
+            'total': pro.price * int(qty)
+        })
+
     else:
         return redirect('login')
     
+    
+def razorpayment(request):
+    amount = int(request.session.get('amount', 0))
 
+    return render(request, 'razorpay_demo.html', {
+        'amount': amount
+    })
+
+    

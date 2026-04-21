@@ -85,15 +85,15 @@ body {
 
 /* ---------- Update Button ---------- */
 input[type="button"] {
-    margin-top: 15px;
+    margin-top: 25px;
     padding: 8px 18px;
-    border-radius: 20px;
+    border-radius: 45px;
     border: none;
     background: #2193b0;
     color: #fff;
     font-size: 14px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.6s;
 }
 
 input[type="button"]:hover {
@@ -103,12 +103,12 @@ input[type="button"]:hover {
 /* ---------- Social Icons ---------- */
 .social-link {
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 .social-link li a {
     width: 34px;
-    height: 34px;
+    height: 44px;
     border-radius: 50%;
     background: #e0e0e0;
     display: flex;
@@ -129,6 +129,6 @@ input[type="button"]:hover {
 
     .img-radius {
         width: 70px;
-        height: 70px;
+        height: 80px;
     }
 }

@@ -38,7 +38,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="{% url "index" %}">Home</a>
             </li>
             {% if logged_in %}
             <li class="nav-item">
@@ -71,6 +71,11 @@
               <a class="nav-link" href={% url "cart_view" %}
                 ><i class="fa fa-cart-shopping text-dark" aria-hidden="true"></i
               ></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "profile" %}">User</a>
+              <!--<i class="fa-solid fa-plus-square text-dark" aria-hidden="true">User</i> -->
+              </a>
             </li>
           </ul>
         </div>

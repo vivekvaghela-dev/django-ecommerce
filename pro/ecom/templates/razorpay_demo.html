@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Demo</title>
+</head>
+<body style="text-align:center; padding-top:100px;">
+
+    <h1>💳 Razorpay Demo Payment Page</h1>
+    <h3>Amount: ₹{{ amount }}</h3>
+
+    <p>Processing Payment...</p>
+
+    <script>
+        setTimeout(function(){
+            alert("✅ Payment Successful");
+            window.location.href = "/";
+        }, 4000);
+    </script>
+
+</body>
+</html>

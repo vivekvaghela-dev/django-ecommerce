@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Razorpay Javascript code.  -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script> 
+        var options = {
+
+            //Enter the key ID generated from the Dashboard
+            key: "{{ razorpay_merchant_key}}",
+
+            //Amount is currency subunits.
+            //Default currency is INR. Heance,
+            amount: "{{ razorpay_amount }}",
+            currency: "{{ currenty}}",
+
+            //Your/store name
+            name: "DJ Razorapy",
+
+            // Pass the id obtained in the responce of step 1
+            order_id: "{{ razorpay_order_id }}",
+            callback_url: "{{ razorpay_url }}",
+        };
+
+        //intialise razorpay with the options
+        var rzp1 = new Razorpay(options);
+
+        //add event listener to the payment button.
+            rzp1.open();
+            
+            ;
+    </script>
+</body>
+</html>
