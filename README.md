@@ -19,6 +19,8 @@ This is a fully functional E-Commerce platform developed using the Django web fr
 - Add to Cart / Remove from Cart
 - Place Orders
 - Order History
+- Payment Gateway (Razorpay)
+-  Product Search & Filter
  
 ### 🔧 Admin Features
 - Django Admin Panel
@@ -119,8 +121,6 @@ Admin Panel: `http://127.0.0.1:8000/admin/`
 ## 📈 Future Improvements
  
 - [ ] Django REST Framework (DRF) API integration
-- [ ] Payment Gateway (Razorpay / Stripe)
-- [ ] Product Search & Filter
 - [ ] Product Reviews & Ratings
 - [ ] Email Notifications
 - [ ] Docker Deployment
