@@ -185,8 +185,8 @@ def plus_pro(request,id):#cart me add products
 
 def minus_pro(request,id):#cart me minus products
     cart_data = Cart.objects.get(id = id)
-    if cart_data.qty <= 1:
-        cart_data.delete()
+    if cart_data.qty <= 0:
+        #cart_data.delete()
 
         return redirect('cart_view')
     else:
@@ -195,6 +195,27 @@ def minus_pro(request,id):#cart me minus products
         cart_data.save()
         return redirect('cart_view')
     
+def remove_cart(request, id):
+    if 'login' in request.session:
+        logged_in = Registration.objects.get(email=request.session['login'])
+        
+        # sirf same user ka product delete kare
+        Cart.objects.filter(id=id, user=logged_in, order_id=0).delete()
+        
+        return redirect('cart_view')
+    return redirect('login')
+
+
+def remove_all_cart(request):
+    if 'login' in request.session:
+        logged_in = Registration.objects.get(email=request.session['login'])
+        
+        # pura cart clear
+        Cart.objects.filter(user=logged_in, order_id=0).delete()
+        
+        return redirect('cart_view')
+    return redirect('login')
+
 
 def checkout_cart(request):#add to cart checkout products
     if 'login' in request.session:
@@ -298,7 +319,7 @@ def checkout(request):
     else:
         return redirect('login')
     
-    
+
 def razorpayment(request):
     amount = int(request.session.get('amount', 0))
 
@@ -306,4 +327,34 @@ def razorpayment(request):
         'amount': amount
     })
 
+    
+from django.core.mail import send_mail
+import random
+
+def email_send(request):
+    otp = random.randint(100,999)
+    request.session['otp'] = otp
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        send_mail(
+            'Checking mail',
+            f'Your otp is {otp}',
+            'vaghelavivekm@gmail.com',
+            [email],
+            fail_silently = False
+        )
+        #return render(request,'send_email.html')
+        return redirect('send_otp')
+    else:
+        return render(request,'send_email.html')
+    
+
+def send_otp(request):
+    if request.method == 'POST':    
+        if request.session['otp'] == int(request.POST['otp']):
+            return redirect('index')
+        else:
+            return render(request,'check_otp.html',{'incorrect':"Invalid OTP"})
+    else:
+        return render(request,'check_otp.html')
     

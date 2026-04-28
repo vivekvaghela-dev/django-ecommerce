@@ -141,7 +141,15 @@ LOGOUT_REDIRECT_URL = 'login'
 SESSION_SAVE_EVERY_REQUEST = True  # Har request par session save karega
 
 
-import os
 
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
+
+#EMAIL SEND MATE
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'vaghelavivekm@gmail.com'
+EMAIL_HOST_PASSWORD = 'kbou hkcr njqh nyjy'
+EMAIL_PORT = 587 #protocol che 
+EMAIL_USE_TLS = True

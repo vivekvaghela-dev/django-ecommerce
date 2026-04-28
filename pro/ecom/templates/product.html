@@ -61,13 +61,14 @@
                     {% if less_stock %}
                         <p style="color: red;">Only {{product.stock}} unit avaialble.</p>
                     {% endif %}
-                    {% if products.stock is 0 %}
+                    
+                    {% if product.stock is 0 %}
                         <p style="color: red;"> Products is out of stock </p>
                     {% else %}
-                    <a href=>                    
+                    <a href= {% url "checkout_cart" %}>                    
                     <button type="submit" class="btn btn-outline-primary mt-3" name="buy">Buy now</button>
                     </a>
-                    <a href=>
+                    <a href={% url "cart_view" %}>
                     <button type="submit" class="btn btn-outline-primary mt-3" name="cart">Add to Cart</button>
                     </a>
                     {% endif %}

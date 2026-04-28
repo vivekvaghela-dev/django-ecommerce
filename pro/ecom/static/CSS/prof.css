@@ -36,15 +36,17 @@ body {
 }
 
 /* ---------- Profile Image (SMALL SIZE) ---------- */
-.img-radius {
-    width: 80px;          /* 🔥 yaha size control hota hai */
-    height: 80px;
-    border-radius: 50%;
+.cart-img {
+    width: 30px;
+    height: 30px;
     object-fit: cover;
-    border: 3px solid #fff;
-    background: #fff;
+    border-radius: 10px;
+    transition: 0.3s;
 }
 
+.cart-img:hover {
+    transform: scale(1.05);
+}
 /* ---------- Name & Role ---------- */
 .user-profile h6 {
     margin-top: 12px;
@@ -132,3 +134,4 @@ input[type="button"]:hover {
         height: 80px;
     }
 }
+

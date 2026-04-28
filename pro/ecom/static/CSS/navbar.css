@@ -1,0 +1,175 @@
+/* ========================== General Styles ========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* ========================== Navbar ========================== */
+header.navbar-light.bg-light {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e44d26 !important;
+  letter-spacing: 1px;
+}
+
+.navbar-brand:hover {
+  color: #c0392b !important;
+}
+
+.navbar-nav .nav-link {
+  color: #333 !important;
+  font-weight: 500;
+  margin: 0 6px;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: #e44d26;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #e44d26 !important;
+}
+
+/* Search Input in Navbar */
+.navbar-nav .input-group-text {
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding: 5px 15px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.3s ease;
+  background-color: #fff;
+}
+
+.navbar-nav .input-group-text:focus {
+  border-color: #e44d26;
+  box-shadow: 0 0 5px rgba(228, 77, 38, 0.3);
+}
+
+/* Cart & Icons */
+.fa-cart-shopping,
+.fa-plus-square {
+  font-size: 1.2rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover .fa-cart-shopping,
+.nav-link:hover .fa-plus-square {
+  color: #e44d26;
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+  border: none;
+  outline: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* ========================== Content Blocks ========================== */
+.content-section {
+  padding: 40px 0;
+  min-height: 60vh;
+}
+
+/* ========================== Footer ========================== */
+footer.bg-dark {
+  background-color: #1a1a2e !important;
+  border-top: 3px solid #e44d26;
+}
+
+footer h5 {
+  color: #e44d26;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+footer p {
+  color: #bbb;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+footer ul li a {
+  color: #bbb;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+footer ul li a:hover {
+  color: #e44d26;
+  padding-left: 5px;
+}
+
+footer .list-inline-item a {
+  color: #bbb;
+  font-size: 1.3rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+footer .list-inline-item a:hover {
+  color: #e44d26;
+  transform: scale(1.2);
+}
+
+footer hr {
+  border-color: #444;
+  margin: 15px 0;
+}
+
+footer .text-center p {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+/* ========================== Responsive ========================== */
+@media (max-width: 991px) {
+  .navbar-nav .nav-link {
+    margin: 5px 0;
+  }
+
+  .navbar-nav .input-group-text {
+    width: 100%;
+    margin: 8px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  footer .col-md-4 {
+    margin-bottom: 20px;
+  }
+}
