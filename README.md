@@ -132,6 +132,6 @@ Admin Panel: `http://127.0.0.1:8000/admin/`
 **Vivek Vaghela |  Fresher Python Backend Developer**
 - GitHub: [@6355492210](https://github.com/6355492210)
 - LinkedIn: [linkedin.com/in/vaghelavivekm](https://www.linkedin.com/in/vaghelavivekm)
-- Location: Rajkot, Gujarat
+- Location: Ahmedabad, Gujarat
  
 This project is open source and available under the [MIT License](LICENSE).
